@@ -42,7 +42,7 @@ public class PlayerMotor : MonoBehaviour
     moveVector.z = Input.GetAxisRaw("Horizontal") * speed*(-1);
             moveVector.y = verticalVelocity;
             moveVector.x = speed;
-           
+           /*
             if (Input.GetKey(KeyCode.D))
             {
 
@@ -53,7 +53,7 @@ public class PlayerMotor : MonoBehaviour
             {
                 transform.Rotate(transform.rotation * Vector3.left * 40 * Time.deltaTime);
             }
-          
+          */
             if (Input.GetAxisRaw("Jump") == 1 && jumpLimiter<1.2f)
             {
                 moveVector = (jump(moveVector));
