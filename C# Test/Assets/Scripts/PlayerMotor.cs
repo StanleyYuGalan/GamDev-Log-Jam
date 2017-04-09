@@ -14,11 +14,15 @@ public class PlayerMotor : MonoBehaviour
     public GameObject youWin;
     private Transform baseRotation;
     private bool dead =false;
+    float rotationLimiter = 0f;
+    float minRot = 56;
+    float maxRot = 100;
+
   //Use this for installation
   void Start ()
   {
       controller = GetComponent<CharacterController> ();
-        baseRotation = Vector3.zero;
+        baseRotation = transform;
           }
     //Update is called once per frame
   void Update ()
@@ -36,9 +40,20 @@ public class PlayerMotor : MonoBehaviour
     }
 
     moveVector.z = Input.GetAxisRaw("Horizontal") * speed*(-1);
-    baseRotation.eulerAngles = new Vector3(baseRotation.eulerAngles.x,baseRotation.eulerAngles.y, Input.GetAxisRaw("Horizontal") * -30);
-    moveVector.y = verticalVelocity;
-    moveVector.x = speed;
+            moveVector.y = verticalVelocity;
+            moveVector.x = speed;
+           
+            if (Input.GetKey(KeyCode.D))
+            {
+
+                transform.Rotate(transform.rotation * Vector3.right * 40 * Time.deltaTime);
+
+            }
+            else if (Input.GetKey(KeyCode.A))
+            {
+                transform.Rotate(transform.rotation * Vector3.left * 40 * Time.deltaTime);
+            }
+          
             if (Input.GetAxisRaw("Jump") == 1 && jumpLimiter<1.2f)
             {
                 moveVector = (jump(moveVector));
@@ -50,8 +65,9 @@ public class PlayerMotor : MonoBehaviour
                 if(controller.isGrounded)
                     jumpLimiter = 0;
             }
-    controller.Move (moveVector * Time.deltaTime);
-        }
+            //moveVector = transform.rotation * moveVector;
+            controller.Move (moveVector * Time.deltaTime);
+               }
 
     }
       void OnControllerColliderHit(ControllerColliderHit hit)
