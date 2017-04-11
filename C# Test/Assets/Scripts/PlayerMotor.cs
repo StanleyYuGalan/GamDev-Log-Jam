@@ -12,7 +12,11 @@ public class PlayerMotor : MonoBehaviour
     public Animator animator;
     public GameObject youDied;
     public GameObject youWin;
+    public float directionControl = 0.5f;
     private bool dead = false;
+    private float initialWait = 2f;
+    private float currentHoldTime = 0f;
+
 
     //Use this for installation
     void Start()
@@ -23,6 +27,7 @@ public class PlayerMotor : MonoBehaviour
     //Update is called once per frame
     void Update()
     {
+        currentHoldTime += Time.deltaTime;
         if (!dead)
         {
             moveVector = Vector3.zero;
@@ -33,10 +38,12 @@ public class PlayerMotor : MonoBehaviour
                 // JUMP
                 verticalVelocity = -0.5f;
                 transform.FindChild("WaterSplash").gameObject.SetActive(true);
+                transform.FindChild("WaterWake").gameObject.SetActive(true);
                 if (Input.GetAxisRaw("Jump") > 0.0f)
                 {
                     verticalVelocity = 20.0f;
                     transform.FindChild("WaterSplash").gameObject.SetActive(false);
+                    transform.FindChild("WaterWake").gameObject.SetActive(false);
                 }
             }
             else
@@ -51,17 +58,34 @@ public class PlayerMotor : MonoBehaviour
             //Debug.Log("(" + moveVector.x + ", " + moveVector.y + ", " + moveVector.z + "), rotation = " + transform.rotation);
             
             // TURN  
-            if (Input.GetKey(KeyCode.A))
+            if (Input.GetKey(KeyCode.A)&& currentHoldTime > initialWait)
             {
                 transform.position += transform.forward * 20 * Time.deltaTime;
-                //transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
+                //Temp
+                transform.Rotate(Vector3.down * 90 * Time.deltaTime);
+                if (directionControl > 0)
+                    directionControl -= .05f;
+                //animator.SetFloat("Blend", 0);
             }
-            else if (Input.GetKey(KeyCode.D))
+            else if (Input.GetKey(KeyCode.D) && currentHoldTime > initialWait)
             {
                 transform.position += transform.forward * -20 * Time.deltaTime;
-                //transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
+                //Temp
+                transform.Rotate(Vector3.up * 90 * Time.deltaTime);
+                if (directionControl < 1)
+                    directionControl += .05f;
+                // animator.SetFloat("Blend", 1);
+            }
+            else
+            {
+                if (directionControl < .5)
+                    directionControl += .05f;
+                else if (directionControl > .5)
+                    directionControl -= .05f;
+                //animator.SetFloat("Blend", 0.5f);
             }
 
+            animator.SetFloat("Blend", directionControl);
             // ROTATE
             if (Input.GetKey(KeyCode.Q))
             {
