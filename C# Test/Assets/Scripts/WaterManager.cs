@@ -10,8 +10,7 @@ public class WaterManager : MonoBehaviour
     }
 
     public GameObject[] tilePrefabs;
-    // Use this for initialization
-
+    
     private Transform playerTransform;
     private float spawnX = -200;
     private float spawnZ = -100;
@@ -19,28 +18,34 @@ public class WaterManager : MonoBehaviour
     private int amnTilesOnScreen = 4;
     private int lastPrefabIndex = -1;
     private List<GameObject> activeTiles;
-    private float safeZone = 200.0f;
+    private List<float> tileLocation;
+    private List<Direction> tileExit;
+    private float safeZone = 30.0f;
 
     private float animationDuration = 2f;
     private Direction direction;
+    private Direction exit;
 
+    // Use this for initialization
     void Start ()
     {
         activeTiles = new List<GameObject>();
+        tileLocation = new List<float>();
+        tileExit = new List<Direction>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         for (int i = 0; i < amnTilesOnScreen; i++)
         {
             if (i < 2)
             {
-                direction = Direction.NORTH;
                 SpawnTile(0);
             }
             else
             {
                 SpawnTile();
             }
-
+            // Debug.Log(i + " (" + spawnX + ", " + spawnZ + ") - " + exit + " " + direction + "");
             // SpawnTile(i + 3);
+            // Debug.Log(tileLocation[i]);
         }
     }
 
@@ -49,10 +54,16 @@ public class WaterManager : MonoBehaviour
     {
         if (Time.time > animationDuration)
         {
-            print(playerTransform.position.z - safeZone);
-            print(spawnX - amnTilesOnScreen * tileLength);
-            if (playerTransform.position.x - safeZone > (spawnX - amnTilesOnScreen * tileLength))
+            // print(playerTransform.position.z - safeZone);
+            // print(spawnX - amnTilesOnScreen * tileLength);
+
+            if (tileExit[1] == Direction.NORTH && playerTransform.position.x > tileLocation[1] + safeZone ||
+                tileExit[1] == Direction.SOUTH && playerTransform.position.x < tileLocation[1] + tileLength - safeZone ||
+                tileExit[1] == Direction.EAST && playerTransform.position.z < tileLocation[1] + tileLength - safeZone ||
+                tileExit[1] == Direction.WEST && playerTransform.position.z > tileLocation[1] + safeZone)
             {
+                Debug.Log("IN IF: " + playerTransform.position + " " + tileLocation[1] + " " + tileExit[1] + "");
+
                 SpawnTile();
                 DeleteTile();
             }
@@ -63,42 +74,57 @@ public class WaterManager : MonoBehaviour
     {
         GameObject go;
 
+        exit = direction;
+
         if (prefabIndex == -1)
         {
             go = Instantiate(tilePrefabs[RandomPrefabIndex()]) as GameObject;
         }
         else
         {
+            if (prefabIndex == 0)
+            {
+                direction = Direction.NORTH;
+            }
+
+            lastPrefabIndex = prefabIndex;
             go = Instantiate(tilePrefabs[prefabIndex]) as GameObject;
         }
 
-        /*go.transform.SetParent(transform);
+        go.transform.SetParent(transform);
 
-        if (direction == Direction.NORTH)
+        if (exit == Direction.NORTH)
         {
             spawnX += tileLength;
+            tileLocation.Add(spawnX);
         }
-        else if (direction == Direction.SOUTH)
+        else if (exit == Direction.SOUTH)
         {
             spawnX -= tileLength;
+            tileLocation.Add(spawnX);
         }
-        else if (direction == Direction.EAST)
+        else if (exit == Direction.EAST)
         {
             spawnZ -= tileLength;
+            tileLocation.Add(spawnZ);
         }
-        else if (direction == Direction.WEST)
+        else if (exit == Direction.WEST)
         {
             spawnZ += tileLength;
+            tileLocation.Add(spawnZ);
         }
+
+        tileExit.Add(exit);
 
         go.transform.position = (Vector3.right * spawnX) + (Vector3.up * -16) + (Vector3.forward * spawnZ);
 
-        Debug.Log(go.transform.position + "");*/
-        
-        go.transform.SetParent(transform);
+        Debug.Log("( " + go.transform.position.x + ", " + go.transform.position.z + ") - E:" + exit + " D:" + direction);
+        // Debug.Log(go.transform.position + "");
+
+        /*go.transform.SetParent(transform);
         go.transform.position = Vector3.right * spawnX + Vector3.up * -16 + Vector3.forward * -100;
 
-        spawnX += tileLength;
+        spawnX += tileLength;*/
         activeTiles.Add(go);
     }
 
@@ -106,6 +132,8 @@ public class WaterManager : MonoBehaviour
     {
         Destroy(activeTiles[0]);
         activeTiles.RemoveAt(0);
+        tileLocation.RemoveAt(0);
+        tileExit.RemoveAt(0);
     }
 
     private int RandomPrefabIndex ()
