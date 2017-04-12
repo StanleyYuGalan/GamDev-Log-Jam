@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerMotor : MonoBehaviour
 {
@@ -16,12 +17,19 @@ public class PlayerMotor : MonoBehaviour
     private bool dead = false;
     private float initialWait = 2f;
     private float currentHoldTime = 0f;
-
-
+    private float score = 0;
+    public CapsuleCollider caps;
+    public Image Lifebar;
+    public AudioSource woodImpactSound;
+    public AudioSource waterSound;
+    public AudioSource windFlappingSound;
+    public Text scoreBoard;
     //Use this for installation
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        windFlappingSound.enabled = false;
+   
     }
 
     //Update is called once per frame
@@ -31,7 +39,9 @@ public class PlayerMotor : MonoBehaviour
         if (!dead)
         {
             moveVector = Vector3.zero;
-
+            score +=  Time.deltaTime * 137;
+           
+            scoreBoard.text = ((int)score).ToString();
             // GRAVITY
             if (controller.isGrounded)
             {
@@ -39,11 +49,18 @@ public class PlayerMotor : MonoBehaviour
                 verticalVelocity = -0.5f;
                 transform.FindChild("WaterSplash").gameObject.SetActive(true);
                 transform.FindChild("WaterWake").gameObject.SetActive(true);
+                //waterSound.loop = true;
+                waterSound.enabled = true;
+                windFlappingSound.enabled = false;
                 if (Input.GetAxisRaw("Jump") > 0.0f)
                 {
-                    verticalVelocity = 20.0f;
+                    verticalVelocity = 15.0f;
                     transform.FindChild("WaterSplash").gameObject.SetActive(false);
                     transform.FindChild("WaterWake").gameObject.SetActive(false);
+                    waterSound.enabled = false;
+                    if (!windFlappingSound.isPlaying)
+                        windFlappingSound.Play();
+                    windFlappingSound.enabled = true;
                 }
             }
             else
@@ -103,38 +120,26 @@ public class PlayerMotor : MonoBehaviour
         }
 
     }
-
-    void OnCollisionEnter(Collision collision)
+    void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        //if (hit.gameObject.tag.Equals("Obstacle"))
-        //{
-        //    killWinston();
-        //}
-
-        //else if (hit.gameObject.tag.Equals("Victory"))
-        //{ winGame(); }
-
-        /*if (hit.point.z > transform.position.z + controller.radius)
+        
+        if (hit.gameObject.tag.Equals("Obstacle"))
         {
-            killWinston();
-        }*/
+            woodImpactSound.Play();
+            Lifebar.fillAmount -= .1f;
+            
+            if (Lifebar.fillAmount<=0)
+                  killBeaver();
+        }
+
 
     }
-
-    void winGame()
+   
+    void killBeaver()
     {
-        youWin.SetActive(true);
+        youDied.SetActive(true);
         dead = true;
-        Destroy(gameObject);
-        Debug.Log("Winston Won");
-    }
-
-    void killWinston()
-    {
-        animator.SetBool("Die", true);
-        //youDied.SetActive(true);
-        dead = true;
-        Debug.Log("Winston Died");
+        Debug.Log("Beaver Died");
     }
 }
 
