@@ -10,14 +10,17 @@ public class RockManager : MonoBehaviour
     private Transform playerTransform;
     private float spawnZ = -5.0f;
     private float tileLength = 50.0f;
-    private int amnTilesOnScreen = 20;
+    private int amnTilesOnScreen = 5;
     private List<GameObject> activeTiles;
     private int rand;
     private float safeZone = 50.0f;
 
+
+    private float spawnX = 1.0f;
     // Use this for initialization
     void Start ()
     {
+
         activeTiles = new List<GameObject>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         for (int i = 0; i < amnTilesOnScreen; i++)
@@ -28,19 +31,46 @@ public class RockManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    // public void Update1()
+    //  {
+    //      {
+    //spawnX = GameObject.Find("Tiles").GetComponent<WaterManager>().getX();
+    //spawnZ = GameObject.Find("Tiles").GetComponent<WaterManager>().getZ();
+    //       SpawnTile();
+
+    ////     DeleteTile();
+    //  }
+    //  }
+
+    int interval = 1;
+    float nextTime = 0;
+
+
+    public void Update()
     {
-        if (playerTransform.position.z - safeZone > (spawnZ - amnTilesOnScreen * tileLength))
+        //  if (playerTransform.position.z - safeZone > (spawnZ - amnTilesOnScreen * tileLength))
+        //  {
+        //spawnX = GameObject.Find("Tiles").GetComponent<WaterManager>().getX();
+        //spawnZ = GameObject.Find("Tiles").GetComponent<WaterManager>().getZ();
+        //     SpawnTile();
+
+        //       DeleteTile();
+        //   }
+
+        if (Time.time >= nextTime)
         {
+
             SpawnTile();
-            DeleteTile();
+            nextTime += interval;
+
         }
+
     }
 
     void SpawnTile(int prefabIndex = -1)
     {
         GameObject go;
-        go = Instantiate(tilePrefabs[0]) as GameObject;
+        go = Instantiate(tilePrefabs[UnityEngine.Random.Range(0, 3)]) as GameObject;
         go.transform.SetParent(transform);
 
         rand = UnityEngine.Random.Range(1, 3);
@@ -48,14 +78,33 @@ public class RockManager : MonoBehaviour
         switch (rand)
         {
             case 1:
-                go.transform.position = Vector3.right * spawnZ + Vector3.up * 180 + Vector3.forward * 130;
+                //go.transform.position = Vector3.right * (spawnX + 130) + Vector3.forward * spawnZ + Vector3.up *30;
+                Vector3 playerPos = playerTransform.transform.position;
+                Vector3 playerDirection = playerTransform.transform.up;
+                Quaternion playerRotation = playerTransform.transform.rotation;
+                float spawnDistance = -1 * UnityEngine.Random.Range(100, 200); 
+
+                Vector3 spawnPos = playerPos + playerDirection * spawnDistance + Vector3.up * -5; 
+                print(go.transform.position);
+                
+                Instantiate(go, spawnPos, playerRotation);
                 break;
-            case 2:
-                go.transform.position = Vector3.right * spawnZ + Vector3.up * 180 + Vector3.forward * 125;
+
+         /*   case 2:
+                //  go.transform.position = Vector3.right * (spawnX + 130) + Vector3.forward * spawnZ + Vector3.up * 30;
+                go.transform.position = playerTransform.transform.position + (playerTransform.transform.forward * 10);
+
+                print("Position");
+                print(go.transform.position);
                 break;
             case 3:
-                go.transform.position = Vector3.right * spawnZ + Vector3.up * 180 + Vector3.forward * 140;
+                //go.transform.position = Vector3.right * (spawnX + 130) + Vector3.forward * spawnZ + Vector3.up * 30;
+                go.transform.position = playerTransform.transform.position + (playerTransform.transform. * 10);
+
+                print("Position");
+                print(go.transform.position);
                 break;
+                */
         }
 
         spawnZ += tileLength;
@@ -66,6 +115,12 @@ public class RockManager : MonoBehaviour
     {
         Destroy(activeTiles[0]);
         activeTiles.RemoveAt(0);
+    }
+
+    public void InitializePlayerCoordinate(float spawnXNew, float spawnZNew)
+    {
+        spawnX = spawnXNew;
+        spawnZ = spawnZNew;
     }
 
 }

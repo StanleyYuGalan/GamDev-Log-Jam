@@ -18,14 +18,13 @@ public class WaterManager : MonoBehaviour
     private int amnTilesOnScreen = 4;
     private int lastPrefabIndex = -1;
     private List<GameObject> activeTiles;
-    private List<float> tileLocation;
-    private List<Direction> tileExit;
+    public List<float> tileLocation;
+    public List<Direction> tileExit;
     private float safeZone = 30.0f;
 
     private float animationDuration = 2f;
-    private Direction direction;
+    public Direction direction;
     private Direction exit;
-
     // Use this for initialization
     void Start ()
     {
@@ -62,7 +61,9 @@ public class WaterManager : MonoBehaviour
                 tileExit[1] == Direction.EAST && playerTransform.position.z < tileLocation[1] + tileLength - safeZone ||
                 tileExit[1] == Direction.WEST && playerTransform.position.z > tileLocation[1] + safeZone)
             {
-                Debug.Log("IN IF: " + playerTransform.position + " " + tileLocation[1] + " " + tileExit[1] + "");
+              //  Debug.Log("IN IF: " + playerTransform.position + " " + tileLocation[1] + " " + tileExit[1] + "");
+                GameObject.Find("Obstacles").GetComponent<RockManager>().InitializePlayerCoordinate(spawnX, spawnZ);
+               // GameObject.Find("Obstacles").GetComponent<RockManager>().Update1();
 
                 SpawnTile();
                 DeleteTile();
@@ -126,6 +127,16 @@ public class WaterManager : MonoBehaviour
 
         spawnX += tileLength;*/
         activeTiles.Add(go);
+    }
+    
+    public float getX()
+    {
+        return spawnX;
+    }
+
+    public float getZ()
+    {
+        return spawnZ;
     }
 
     void DeleteTile ()

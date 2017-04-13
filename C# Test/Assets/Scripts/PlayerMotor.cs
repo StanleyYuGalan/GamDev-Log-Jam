@@ -6,7 +6,7 @@ public class PlayerMotor : MonoBehaviour
 {
     private CharacterController controller;
     private Vector3 moveVector;
-    private float speed = 30.0f;
+    private float speed = 20.0f;
     private float verticalVelocity = 0.0f;
     private float gravity = 50.0f;
 
@@ -35,6 +35,8 @@ public class PlayerMotor : MonoBehaviour
     //Update is called once per frame
     void Update()
     {
+
+
         currentHoldTime += Time.deltaTime;
         if (!dead)
         {
@@ -119,6 +121,11 @@ public class PlayerMotor : MonoBehaviour
             controller.Move(moveVector * Time.deltaTime);
         }
 
+
+       /* if (transform.position.y <= -7)
+        {
+            killBeaver();
+        }*/
     }
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
