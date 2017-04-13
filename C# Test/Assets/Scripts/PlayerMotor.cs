@@ -122,10 +122,10 @@ public class PlayerMotor : MonoBehaviour
         }
 
 
-       /* if (transform.position.y <= -7)
+        if (transform.position.y <= -9)
         {
             killBeaver();
-        }*/
+        }
     }
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
