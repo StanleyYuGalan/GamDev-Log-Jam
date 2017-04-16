@@ -6,7 +6,7 @@ public class PlaneController : MonoBehaviour {
 
 
     private Transform player;
-    private float level = -8f;
+    private float level = -7f;
     private RaycastHit hit;
 
 
@@ -34,4 +34,13 @@ public class PlaneController : MonoBehaviour {
         transform.position = new Vector3(player.transform.position.x, level, player.transform.position.z);
 
     }
+
+    void OnCollisionEnter(Collision col)
+    {
+    
+        transform.position = new Vector3(player.transform.position.x, level, player.transform.position.z);
+
+    }
+
+
 }

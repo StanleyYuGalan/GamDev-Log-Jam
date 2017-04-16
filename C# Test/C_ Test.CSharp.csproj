@@ -128,6 +128,7 @@
     <Compile Include="Assets\Scripts\Buoyancy.cs" />
     <Compile Include="Assets\Scripts\CameraMotor.cs" />
     <Compile Include="Assets\Scripts\HighScoreManager.cs" />
+    <Compile Include="Assets\Scripts\IgnoreWaterPlane.cs" />
     <Compile Include="Assets\Scripts\KeyNames.cs" />
     <Compile Include="Assets\Scripts\LoadLevel.cs" />
     <Compile Include="Assets\Scripts\NameManager.cs" />

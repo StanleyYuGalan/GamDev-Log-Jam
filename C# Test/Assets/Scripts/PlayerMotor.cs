@@ -8,7 +8,9 @@ public class PlayerMotor : MonoBehaviour
     private Vector3 moveVector;
     private float speed = 20.0f;
     private float verticalVelocity = 0.0f;
-    private float gravity = 50.0f;
+    private float gravity =50.0f;
+
+
 
     public Animator animator;
     public GameObject youDied;
@@ -123,15 +125,16 @@ public class PlayerMotor : MonoBehaviour
         }
 
 
-        if (transform.position.y <= -9)
+       if (transform.position.y <= -9)
         {
             killBeaver();
         }
+    
     }
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         
-        if (hit.gameObject.tag.Equals("Obstacle"))
+       if (hit.gameObject.tag.Equals("Terrain") || hit.gameObject.tag.Equals("Obstacle"))
         {
             woodImpactSound.Play();
             Lifebar.fillAmount -= .1f;
@@ -139,10 +142,34 @@ public class PlayerMotor : MonoBehaviour
             if (Lifebar.fillAmount<=0)
                   killBeaver();
         }
-
-
     }
-   
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.tag.Equals("Terrain") || col.gameObject.tag.Equals("Obstacle"))
+        {
+            if (col.gameObject.tag.Equals("Obstacle"))
+            {
+                Destroy(col.gameObject);
+
+            }
+            woodImpactSound.Play();
+            Lifebar.fillAmount -= .1f;
+
+            if (Lifebar.fillAmount <= 0)
+                killBeaver();
+        }
+    }
+
+    public void DecreaseLife()
+    {
+        woodImpactSound.Play();
+        Lifebar.fillAmount -= .1f;
+
+        if (Lifebar.fillAmount <= 0)
+            killBeaver();
+    }
+
     void killBeaver()
     {
         youDied.SetActive(true);
