@@ -74,35 +74,52 @@ public class RockManager : MonoBehaviour
         go.transform.SetParent(transform);
 
         rand = UnityEngine.Random.Range(1, 3);
-
+        Vector3 playerPos;
+        Vector3 playerDirection;
+        float spawnDistance;
+        Quaternion playerRotation;
+        Vector3 spawnPos;
         switch (rand)
         {
             case 1:
                 //go.transform.position = Vector3.right * (spawnX + 130) + Vector3.forward * spawnZ + Vector3.up *30;
-                Vector3 playerPos = playerTransform.transform.position;
-                Vector3 playerDirection = playerTransform.transform.up;
-                Quaternion playerRotation = playerTransform.transform.rotation;
-                float spawnDistance = -1 * UnityEngine.Random.Range(100, 200); 
+                 playerPos = playerTransform.transform.position;
+               
+                 playerDirection = playerTransform.transform.up;
+                 playerRotation = playerTransform.transform.rotation;
+                 spawnDistance = -1 * UnityEngine.Random.Range(100, 200); 
 
-                Vector3 spawnPos = playerPos + playerDirection * spawnDistance + Vector3.up * -5; 
+                 spawnPos = playerPos + playerDirection * spawnDistance + Vector3.up * 2; 
                 print(go.transform.position);
                 
                 Instantiate(go, spawnPos, playerRotation);
                 break;
 
-         /*   case 2:
+       /*  case 2:
                 //  go.transform.position = Vector3.right * (spawnX + 130) + Vector3.forward * spawnZ + Vector3.up * 30;
-                go.transform.position = playerTransform.transform.position + (playerTransform.transform.forward * 10);
+                playerPos = playerTransform.transform.position;
 
-                print("Position");
+                playerDirection = playerTransform.transform.up;
+                playerRotation = playerTransform.transform.rotation;
+                spawnDistance = -1 * UnityEngine.Random.Range(100, 200);
+
+                spawnPos = playerPos + playerDirection * spawnDistance + Vector3.up * 2;
                 print(go.transform.position);
+
+                Instantiate(go, spawnPos, playerRotation);
                 break;
-            case 3:
-                //go.transform.position = Vector3.right * (spawnX + 130) + Vector3.forward * spawnZ + Vector3.up * 30;
-                go.transform.position = playerTransform.transform.position + (playerTransform.transform. * 10);
 
-                print("Position");
+            case 3:
+                playerPos = playerTransform.transform.position;
+
+                playerDirection = playerTransform.transform.up;
+                playerRotation = playerTransform.transform.rotation;
+                spawnDistance = -1 * UnityEngine.Random.Range(100, 200);
+
+                spawnPos = playerPos + playerDirection * spawnDistance + Vector3.up * 2;
                 print(go.transform.position);
+
+                Instantiate(go, spawnPos, playerRotation);
                 break;
                 */
         }
