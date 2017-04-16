@@ -13,6 +13,7 @@ public class PlayerMotor : MonoBehaviour
     public Animator animator;
     public GameObject youDied;
     public GameObject youWin;
+    public GameObject inputName;
     public float directionControl = 0.5f;
     private bool dead = false;
     private float initialWait = 2f;
@@ -145,6 +146,12 @@ public class PlayerMotor : MonoBehaviour
     void killBeaver()
     {
         youDied.SetActive(true);
+
+        if (GetComponent<ScoreManager>().isNewHighScore())
+        {
+            inputName.SetActive(true);
+        }
+
         dead = true;
         Debug.Log("Beaver Died");
     }

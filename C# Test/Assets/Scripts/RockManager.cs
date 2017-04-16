@@ -8,6 +8,7 @@ public class RockManager : MonoBehaviour
     public GameObject[] tilePrefabs;
     
     private Transform playerTransform;
+    private float animationDuration = 2f;
     private float spawnZ = -5.0f;
     private float tileLength = 50.0f;
     private int amnTilesOnScreen = 5;
@@ -57,14 +58,16 @@ public class RockManager : MonoBehaviour
         //       DeleteTile();
         //   }
 
-        if (Time.time >= nextTime)
+        if (Time.time > animationDuration)
         {
+            if (Time.time >= nextTime)
+            {
 
-            SpawnTile();
-            nextTime += interval;
+                SpawnTile();
+                nextTime += interval;
 
+            }
         }
-
     }
 
     void SpawnTile(int prefabIndex = -1)

@@ -17,7 +17,9 @@ public class LoadLevel : MonoBehaviour {
 	
     public void loadGame()
     {
-    SceneManager.LoadScene("Endless Runner");
+        PlayerPrefs.DeleteKey(KeyNames.KEY_NEW_NAME);
+        PlayerPrefs.DeleteKey(KeyNames.KEY_HIGHSCORE);
+        SceneManager.LoadScene("Endless Runner");
     }
 
     public void quitGame()

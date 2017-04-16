@@ -125,10 +125,18 @@
     <Compile Include="Assets\PostProcessing\Runtime\Utils\MaterialFactory.cs" />
     <Compile Include="Assets\PostProcessing\Runtime\Utils\RenderTextureFactory.cs" />
     <Compile Include="Assets\PostProcessing\Utilities\CustomMotionTexture\ExampleWheelController.cs" />
+    <Compile Include="Assets\Scripts\Buoyancy.cs" />
     <Compile Include="Assets\Scripts\CameraMotor.cs" />
+    <Compile Include="Assets\Scripts\HighScoreManager.cs" />
+    <Compile Include="Assets\Scripts\KeyNames.cs" />
     <Compile Include="Assets\Scripts\LoadLevel.cs" />
+    <Compile Include="Assets\Scripts\NameManager.cs" />
+    <Compile Include="Assets\Scripts\PlaneController.cs" />
     <Compile Include="Assets\Scripts\PlayerMotor.cs" />
+    <Compile Include="Assets\Scripts\PlayerPrefsX.cs" />
     <Compile Include="Assets\Scripts\RockManager.cs" />
+    <Compile Include="Assets\Scripts\ScoreManager.cs" />
+    <Compile Include="Assets\Scripts\ScoreObject.cs" />
     <Compile Include="Assets\Scripts\WaterManager.cs" />
   </ItemGroup>
   <ItemGroup>
