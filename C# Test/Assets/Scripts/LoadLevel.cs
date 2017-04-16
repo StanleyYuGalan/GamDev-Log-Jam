@@ -19,7 +19,18 @@ public class LoadLevel : MonoBehaviour {
     {
         PlayerPrefs.DeleteKey(KeyNames.KEY_NEW_NAME);
         PlayerPrefs.DeleteKey(KeyNames.KEY_HIGHSCORE);
-        SceneManager.LoadScene("Endless Runner");
+
+        int rand = UnityEngine.Random.Range(1, 3);
+
+        switch (rand)
+        {
+            case 1: SceneManager.LoadScene("Endless Runner");
+                break;
+            case 2: SceneManager.LoadScene("Endless Runner - Fire");
+                break;
+
+        }
+
     }
 
     public void quitGame()
