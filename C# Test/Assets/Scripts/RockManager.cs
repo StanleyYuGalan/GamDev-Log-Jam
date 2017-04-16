@@ -15,6 +15,8 @@ public class RockManager : MonoBehaviour
     private int rand;
     private float safeZone = 50.0f;
 
+    private float animationDuration = 10f;
+
 
     private float spawnX = 1.0f;
     // Use this for initialization
@@ -57,13 +59,17 @@ public class RockManager : MonoBehaviour
         //       DeleteTile();
         //   }
 
-        if (Time.time >= nextTime)
+        if(Time.time > animationDuration)
         {
+            if (Time.time >= nextTime)
+            {
 
-            SpawnTile();
-            nextTime += interval;
+                SpawnTile();
+                nextTime += interval;
 
+            }
         }
+       
 
     }
 
